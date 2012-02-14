@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (C) 2011, Obeo, Stephane Begaudeau
+
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.obeonetwork.acceleo</groupId>
+    <artifactId>org.obeonetwork.pim.ecore.gen.scala.extended.parent</artifactId>
+    <version>1.0.0.qualifier</version>
+    <relativePath>../..</relativePath>
+  </parent>
+
+  <artifactId>org.obeonetwork.pim.ecore.gen.scala.extended</artifactId>
+  <version>1.0.0.qualifier</version>
+  <packaging>eclipse-plugin</packaging>
+
+  <name>Acceleo Ecore to Scala Generator Extended</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.acceleo</groupId>
+      <artifactId>maven</artifactId>
+      <version>3.2.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>codegen.ecore</artifactId>
+    	<version>2.7.0</version>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>github snapshot</id>
+      <url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>
+    </repository>
+    <repository>
+      <id>github release</id>
+      <url>https://github.com/sbegaudeau/maven-repository/raw/master/releases</url>
+    </repository>
+  </repositories>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.acceleo</groupId>
+        <artifactId>maven</artifactId>
+        <version>3.2.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>acceleo-compilation</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>acceleo-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <useBinaryResources>false</useBinaryResources>
+          <acceleoProject>
+            <root>${project.basedir}</root>
+            <entries>
+              <entry>
+                <input>src/</input>
+                <output>target/classes</output>
+              </entry>
+            </entries>
+            <jars>
+            	<jar>p2.eclipse-plugin:org.obeonetwork.pim.ecore.gen.scala</jar>
+            </jars>
+          </acceleoProject>
+          <packagesToRegister>
+            <packageToRegister>org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage</packageToRegister>
+            <packageToRegister>org.eclipse.emf.ecore.EcorePackage</packageToRegister>
+          </packagesToRegister>
+          <uriHandler>org.eclipse.acceleo.maven.AcceleoURIHandler</uriHandler>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
